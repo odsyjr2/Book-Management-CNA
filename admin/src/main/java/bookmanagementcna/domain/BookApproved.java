@@ -23,6 +23,8 @@ public class BookApproved extends AbstractEvent {
 
     public BookApproved(Admin aggregate) {
         super(aggregate);
+        this.requestId = aggregate.getRequestId();
+        this.targetId = aggregate.getRequestId();
     }
 
     public BookApproved() {
