@@ -1,0 +1,92 @@
+server:
+  port: 8088
+
+---
+
+spring:
+  profiles: default
+  cloud:
+    gateway:
+#<<< API Gateway / Routes
+      routes:
+        - id: author management
+          uri: http://localhost:8082
+          predicates:
+            - Path=/authors/**, /publishManages/**, 
+        - id: subscribers management
+          uri: http://localhost:8083
+          predicates:
+            - Path=/subscribers/**, 
+        - id: service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/services/**, 
+        - id: admin
+          uri: http://localhost:8085
+          predicates:
+            - Path=/admins/**, 
+        - id: 대시보드
+          uri: http://localhost:8086
+          predicates:
+            - Path=, /bookLists/**, /구독상태조회/**, /bestsellerLists/**
+        - id: frontend
+          uri: http://localhost:8080
+          predicates:
+            - Path=/**
+#>>> API Gateway / Routes
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+
+---
+
+spring:
+  profiles: docker
+  cloud:
+    gateway:
+      routes:
+        - id: author management
+          uri: http://authorManagement:8080
+          predicates:
+            - Path=/authors/**, /publishManages/**, 
+        - id: subscribers management
+          uri: http://subscribersManagement:8080
+          predicates:
+            - Path=/subscribers/**, 
+        - id: service
+          uri: http://service:8080
+          predicates:
+            - Path=/services/**, 
+        - id: admin
+          uri: http://admin:8080
+          predicates:
+            - Path=/admins/**, 
+        - id: 대시보드
+          uri: http://대시보드:8080
+          predicates:
+            - Path=, 
+        - id: frontend
+          uri: http://frontend:8080
+          predicates:
+            - Path=/**
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "*"
+            allowedMethods:
+              - "*"
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+server:
+  port: 8080
