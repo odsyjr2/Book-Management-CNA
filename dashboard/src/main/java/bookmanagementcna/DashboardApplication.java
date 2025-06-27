@@ -16,6 +16,6 @@ public class DashboardApplication {
 
     public static void main(String[] args) {
         applicationContext =
-            SpringApplication.run(dashboardApplication.class, args);
+            SpringApplication.run(DashboardApplication.class, args);
     }
 }
