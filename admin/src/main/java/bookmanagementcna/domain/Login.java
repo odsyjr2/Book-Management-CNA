@@ -17,4 +17,5 @@ public class Login extends AbstractEvent {
     private Boolean joinStatus;
     private Boolean ktCustomer;
     private String loginStatus;
+
 }

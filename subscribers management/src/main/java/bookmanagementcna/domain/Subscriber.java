@@ -37,28 +37,44 @@ public class Subscriber {
     private Boolean joinStatus;
 
     private Boolean ktCustomer;
-
+    
     private String loginStatus;
 
     @PostPersist
     public void onPostPersist() {
+        // 회원가입 시점에만 필요한 이벤트만 발행
         SignedIn signedIn = new SignedIn(this);
         signedIn.publishAfterCommit();
-
+        
+        this.point = 1000; // 가입 기본 포인트 설정
         PointsAdded pointsAdded = new PointsAdded(this);
         pointsAdded.publishAfterCommit();
+    }
 
-        PointsUsed pointsUsed = new PointsUsed(this);
-        pointsUsed.publishAfterCommit();
-
-        ContentViewEnabled contentViewEnabled = new ContentViewEnabled(this);
-        contentViewEnabled.publishAfterCommit();
-
+    // 로그인
+    public void login() {
+        this.loginStatus = "LOGIN";
         Login login = new Login(this);
         login.publishAfterCommit();
+    }
 
+    // 로그아웃
+    public void logout() {
+        this.loginStatus = "LOGOUT";
         Logout logout = new Logout(this);
         logout.publishAfterCommit();
+    }
+
+    // 콘텐츠 열람 시 포인트 차감 및 열람 가능 이벤트 발행
+    public void usePointForContent(int amount) {
+        if (this.point != null && this.point >= amount) {
+            this.point -= amount;
+            PointsUsed pointsUsed = new PointsUsed(this);
+            pointsUsed.publishAfterCommit();
+            ContentViewEnabled contentViewEnabled = new ContentViewEnabled(this);
+            contentViewEnabled.publishAfterCommit();
+        }
+        // TODO: 포인트 부족 시 예외 처리 필요
     }
 
     public static SubscriberRepository repository() {
@@ -130,3 +146,4 @@ public class Subscriber {
 
 }
 //>>> DDD / Aggregate Root
+

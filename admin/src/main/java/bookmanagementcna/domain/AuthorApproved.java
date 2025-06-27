@@ -14,15 +14,17 @@ public class AuthorApproved extends AbstractEvent {
     private Long id;
     private String requestId;
     private String requestType;
-    private String targetId;
+    private Long targetId;
     private String requestedAt;
     private String status;
-    private String adminId;
-    private String approvedAt;
+    private Long adminId;
+    private Date approvedAt;
     private String message;
 
     public AuthorApproved(Admin aggregate) {
         super(aggregate);
+        this.requestId = aggregate.getRequestId();
+        this.targetId = aggregate.getTargetId();
     }
 
     public AuthorApproved() {

@@ -1,4 +1,4 @@
-package bookmanagementcna.domain;
+package bookmanagementcna.domain; 
 
 import bookmanagementcna.AuthorManagementApplication;
 import bookmanagementcna.domain.RegistrationRequested;

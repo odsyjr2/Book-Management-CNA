@@ -23,6 +23,8 @@ public class ReportResolved extends AbstractEvent {
 
     public ReportResolved(Admin aggregate) {
         super(aggregate);
+        this.requestId = aggregate.getRequestId();
+        this.targetId = aggregate.getTargetId();
     }
 
     public ReportResolved() {
