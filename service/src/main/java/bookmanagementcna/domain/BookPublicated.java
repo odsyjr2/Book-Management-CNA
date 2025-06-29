@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.*;
 import lombok.*;
 
-//<<< DDD / Domain Event
+//<<< DDD / Domain Event // 출간됨, 전자책 요약됨
 @Data
 @ToString
 public class BookPublicated extends AbstractEvent {
@@ -30,4 +30,5 @@ public class BookPublicated extends AbstractEvent {
         super();
     }
 }
-//>>> DDD / Domain Event
+
+
