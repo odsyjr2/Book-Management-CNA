@@ -1,4 +1,4 @@
-package bookmanagementcna.domain; 
+package bookmanagementcna.domain;
 
 import bookmanagementcna.AuthorManagementApplication;
 import bookmanagementcna.domain.RegistrationRequested;
@@ -35,9 +35,7 @@ public class Author {
 
     @PostPersist
     public void onPostPersist() {
-        RegistrationRequested registrationRequested = new RegistrationRequested(
-            this
-        );
+        RegistrationRequested registrationRequested = new RegistrationRequested(this);
         registrationRequested.publishAfterCommit();
     }
 
@@ -50,26 +48,11 @@ public class Author {
 
     //<<< Clean Arch / Port Method
     public static void approveAuthor(AuthorApproved authorApproved) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Author author = new Author();
-        repository().save(author);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(authorApproved.get???()).ifPresent(author->{
-            
-            author // do something
-            repository().save(author);
-
-
-         });
-        */
-
+        repository().findById(Long.valueOf(authorApproved.getTargetId()))
+            .ifPresent(author -> {
+                author.setRegisterStatus("승인됨"); // 승인 상태로 변경
+                repository().save(author); // DB에 저장
+            });
     }
     //>>> Clean Arch / Port Method
 
