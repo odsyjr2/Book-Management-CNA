@@ -31,7 +31,7 @@ public class Admin {
 
     private String requestedAt;
 
-    private String status;      // APPROVED, REJECTED
+    private String status;      // APPROVED, REJECTED, RESOLVED
 
     private Long adminId;
 
@@ -41,17 +41,22 @@ public class Admin {
 
     @PostPersist
     public void onPostPersist() {
-        ReportResolved reportResolved = new ReportResolved(this);
-        reportResolved.publishAfterCommit();
-
-        BookApproved bookApproved = new BookApproved(this);
-        bookApproved.publishAfterCommit();
+        if ("REPORT".equals(this.requestType)) {
+            ReportResolved reportResolved = new ReportResolved(this);
+            reportResolved.publishAfterCommit();
+        }
+        else if ("BOOK".equals(this.requestType)) {
+            BookApproved bookApproved = new BookApproved(this);
+            bookApproved.publishAfterCommit();
+        }
     }
 
     @PostUpdate
     public void onPostUpdate() {
-        AuthorApproved authorApproved = new AuthorApproved(this);
-        authorApproved.publishAfterCommit();
+        if ("AUTHOR".equals(this.requestType)) {
+            AuthorApproved authorApproved = new AuthorApproved(this);
+            authorApproved.publishAfterCommit();
+        }
     }
 
     public static AdminRepository repository() {
@@ -62,108 +67,44 @@ public class Admin {
     }
 
     //<<< Clean Arch / Port Method
-    public static void requestRegister(
-        RegistrationRequested registrationRequested
-    ) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
+    public static void requestRegister(RegistrationRequested event) {
         Admin admin = new Admin();
+        admin.setRequestId(event.getId());
+        admin.setRequestType("AUTHOR");
+        admin.setTargetId(event.getEmail());
+        admin.setStatus("PENDING");
+        admin.setRequestedAt(new Date().toString());
         repository().save(admin);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(registrationRequested.get???()).ifPresent(admin->{
-            
-            admin // do something
-            repository().save(admin);
-
-
-         });
-        */
-
     }
 
     //>>> Clean Arch / Port Method
     //<<< Clean Arch / Port Method
-    public static void requestRegister(
-        PublishRequestRegistered publishRequestRegistered
-    ) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Admin admin = new Admin();
+    public static void requestRegister(PublishRequestRegistered event) {
+       Admin admin = new Admin();
+        admin.setRequestId(event.getId());
+        admin.setRequestType("BOOK");
+        admin.setTargetId(event.getAuthorId());
+        admin.setStatus("PENDING");
+        admin.setRequestedAt(new Date().toString());
         repository().save(admin);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(publishRequestRegistered.get???()).ifPresent(admin->{
-            
-            admin // do something
-            repository().save(admin);
-
-
-         });
-        */
-
     }
 
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
+    public static void requestResolve(ContentReported event) {
+        Admin admin = new Admin();
+        admin.setRequestId(event.getId());
+        admin.setRequestType("REPORT");
+        admin.setTargetId(event.getReportedContentId());
+        admin.setStatus("PENDING");
+        admin.setRequestedAt(new Date().toString());
+        repository().save(admin);
+    }
+
     public static void approveLogin(Login login) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Admin admin = new Admin();
-        repository().save(admin);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(login.get???()).ifPresent(admin->{
-            
-            admin // do something
-            repository().save(admin);
-
-
-         });
-        */
-
+        System.out.println("Login approved for: " + login.getUserId());
     }
 
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
-    public static void approveLogout(Logout logout) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Admin admin = new Admin();
-        repository().save(admin);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(logout.get???()).ifPresent(admin->{
-            
-            admin // do something
-            repository().save(admin);
-
-
-         });
-        */
-
+   public static void approveLogout(Logout logout) {
+        System.out.println("Logout approved for: " + logout.getUserId());
     }
-    //>>> Clean Arch / Port Method
 
 }
-//>>> DDD / Aggregate Root
