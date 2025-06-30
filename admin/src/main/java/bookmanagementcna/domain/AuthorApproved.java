@@ -35,4 +35,3 @@ public class AuthorApproved extends AbstractEvent {
         System.out.println("AuthorApproved Event published: " + this);
     }
 }
-//>>> DDD / Domain Event
