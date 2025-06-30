@@ -82,109 +82,19 @@ public class Service {
         return serviceRepository;
     }
 
-    //<<< Clean Arch / Port Method
-    public static void createAiCoverImage(RequestApproved requestApproved) {
-        //implement business logic here:
+    @Entity
+public class Service {
+    @Id
+    private Long id;
+    private String publicationId;
+    private String title;
+    private Boolean isBestSeller;
+    private Boolean isPublishCompleted;
 
-        /** Example 1:  new item 
-        Service service = new Service();
-        repository().save(service);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(requestApproved.get???()).ifPresent(service->{
-            
-            service // do something
-            repository().save(service);
-
-
-        });
-        */
-
+    public void publishRequest(PublishCommand cmd) {
+        this.isPublishCompleted = true;
+        ServicePublished event = new ServicePublished(this);
+        event.publishAfterCommit(); // 1. 이벤트 발행
     }
-
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
-    public static void bookRequest(PointsUsed pointsUsed) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Service service = new Service();
-        repository().save(service);
-
-        BookInfoSended bookInfoSended = new BookInfoSended(service);
-        bookInfoSended.publishAfterCommit();
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(pointsUsed.get???()).ifPresent(service->{
-            
-            service // do something
-            repository().save(service);
-
-            BookInfoSended bookInfoSended = new BookInfoSended(service);
-            bookInfoSended.publishAfterCommit();
-
-         });
-        */
-
-    }
-
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
-    public static void viewIncrease(PointsUsed pointsUsed) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Service service = new Service();
-        repository().save(service);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(pointsUsed.get???()).ifPresent(service->{
-            
-            service // do something
-            repository().save(service);
-
-
-         });
-        */
-
-    }
-
-    //>>> Clean Arch / Port Method
-    //<<< Clean Arch / Port Method
-    public static void deactivateContent(ReportResolved reportResolved) {
-        //implement business logic here:
-
-        /** Example 1:  new item 
-        Service service = new Service();
-        repository().save(service);
-
-        */
-
-        /** Example 2:  finding and process
-        
-
-        repository().findById(reportResolved.get???()).ifPresent(service->{
-            
-            service // do something
-            repository().save(service);
-
-
-         });
-        */
-
-    }
-    //>>> Clean Arch / Port Method
-
+  }
 }
-//>>> DDD / Aggregate Root
