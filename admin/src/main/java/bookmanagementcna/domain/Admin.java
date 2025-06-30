@@ -25,13 +25,13 @@ public class Admin {
 
     private Long requestId;
 
-    private String requestType;
+    private String requestType; // AUTHOR, BOOK, REPORT
 
     private String targetId;
 
     private String requestedAt;
 
-    private String status;
+    private String status;      // APPROVED, REJECTED
 
     private Long adminId;
 
