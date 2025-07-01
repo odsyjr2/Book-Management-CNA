@@ -1,5 +1,6 @@
 tasks:
   - init: sudo chmod u+x init.sh && ./init.sh
   - init: |
-      nvm install 14.19.0 && 
-      nvm use 14.19.0
+      nvm install 22.16.0 && 
+      nvm use 22.16.0
+      mvn clean install
